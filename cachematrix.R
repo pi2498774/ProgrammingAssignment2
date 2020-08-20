@@ -8,14 +8,21 @@
 # already known, the special matrix returns it without computing it again
 
 makeCacheMatrix <- function(x = matrix()) {
+        # sets inverse to NULL
         invX <- NULL
         set <- function(y) {
                 x <<- y
                 invX <<- NULL
         }
+        # gets the value of the matrix
         get <- function() x
+        
+        # sets the value of the inverse
         setinv <- function(inverse) invX <<- inverse
+        
+        # gets the value of the inverse
         getinv <- function() invX
+        
         list(set = set, get = get,
              setinv = setinv,
              getinv = getinv)
@@ -30,14 +37,19 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
         invX <- x$getinv()
+        
+        # If the inverse is cached, return it
         if(!is.null(invX)) {
                 message("Getting cached inverse...")
                 return(invX)
         }
+        
         # Inverse is not yet cached, computing it right now
         orig_matrix <- x$get()
         invX <- solve(orig_matrix)
         x$setinv(invX)
+        
+        # Return the inverse
         invX
 }
 
