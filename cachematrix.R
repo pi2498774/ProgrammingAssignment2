@@ -1,4 +1,3 @@
-rm(list = ls())
 ## Put comments here that give an overall description of what your
 ## functions do
 
@@ -9,14 +8,14 @@ rm(list = ls())
 # already known, the special matrix returns it without computing it again
 
 makeCacheMatrix <- function(x = matrix()) {
-        inv <- NULL
+        invX <- NULL
         set <- function(y) {
                 x <<- y
-                inv <<- NULL
+                invX <<- NULL
         }
         get <- function() x
-        setinv <- function(inverse) inv <<- inverse
-        getinv <- function() inv
+        setinv <- function(inverse) invX <<- inverse
+        getinv <- function() invX
         list(set = set, get = get,
              setinv = setinv,
              getinv = getinv)
@@ -30,16 +29,16 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
-        inv <- x$getinv()
-        if(!is.null(inv)) {
+        invX <- x$getinv()
+        if(!is.null(invX)) {
                 message("Getting cached inverse...")
-                return(inv)
+                return(invX)
         }
         # Inverse is not yet cached, computing it right now
-        data <- x$get()
-        inv <- solve(data)
-        x$setinv(inv)
-        inv
+        orig_matrix <- x$get()
+        invX <- solve(orig_matrix)
+        x$setinv(invX)
+        invX
 }
 
 # # Extra code for testing the functions
